@@ -1,0 +1,124 @@
+paths:
+  /api/content:
+    get:
+      tags:
+        - Content
+      summary: Get all content
+      responses:
+        "200":
+          description: A list of content
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    category:
+                      type: string
+                    user:
+                      type: string
+                    theme:
+                      type: string
+                    media:
+                      type: string
+                    createdAt:
+                      type: string
+        "500":
+          description: Internal server error
+  /api/content/{userId}/{themeId}:
+    post:
+      tags:
+        - Content
+      summary: Create new content
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: User ID
+        - in: path
+          name: themeId
+          schema:
+            type: string
+          required: true
+          description: Theme ID
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                # Or
+                # url:
+                #   type: string
+      responses:
+        "200":
+          description: Content created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad request, validation error
+        "500":
+          description: Internal server error
+  /api/content/{id}:
+    delete:
+      tags:
+        - Content
+      summary: Delete content
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Content ID
+      responses:
+        "200":
+          description: Content deleted successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        "404":
+          description: Content not found
+        "500":
+          description: Internal server error
+  /api/content/{type}/{media}:
+    get:
+      tags:
+        - Content
+      summary: Get media file
+      parameters:
+        - in: path
+          name: type
+          schema:
+            type: string
+          required: true
+          description: Media type (ejemplo, 'media', 'txt')
+        - in: path
+          name: media
+          schema:
+            type: string
+          required: true
+          description: Media filename
+      responses:
+        "200":
+          description: Media file
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: Bad request, file not found
+        "500":
+          description: Internal server error

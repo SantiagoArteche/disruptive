@@ -1,0 +1,76 @@
+paths:
+  /api/theme:
+    get:
+      summary: Retrieves all themes
+      tags:
+        - Themes
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Theme"
+
+    post:
+      summary: Creates a new theme
+      tags:
+        - Themes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateThemeDto"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Theme"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+  /api/theme/{id}:
+    get:
+      summary: Retrieves a theme by its ID
+      tags:
+        - Themes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Theme"
+        "404":
+          description: Not Found
+
+components:
+  schemas:
+    Theme:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    CreateThemeDto:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
